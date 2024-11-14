@@ -933,7 +933,10 @@ pub struct AdvancedVolumes {
 #[derive(Clone, Debug, Serialize, Deserialize, Eq, PartialEq, Hash, Default)]
 #[serde(deny_unknown_fields)]
 pub struct Bind {
-    pub propagation: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub propagation: Option<String>,
+    #[serde(default="default_true", skip_serializing_if = "Clone::clone")]
+    pub create_host_path: bool
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, Eq, PartialEq, Hash, Default)]
@@ -1029,4 +1032,8 @@ where
             }
         }
     }
+}
+
+fn default_true() -> bool {
+    true
 }
